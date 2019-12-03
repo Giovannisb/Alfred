@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Alfred | Login</title>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/login.css">
+    </head>
+    <body class="text-center">
+        <div class="container">
+            <form id="login" class="form-singin" action="main.html">
+                <h1 class="titulo">Alfred</h1>
+                <h3 class="descrição">Organizador de tarefas</h3>
+                <label for="inputUsername" class="sr-only">Username: </label>
+                <input type="text" id="username" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputPassword" class="sr-only">Senha: </label>
+                <input type="password" id="password" class="form-control" placeholder="********" required autofocus minlength="4">
+                <a href="cadastro.html">Não tenho cadastro.</a>
+                <input type="submit" id="btn-login" class="btn btn-lg btn-primary btn-block"/> 
+                <p class="mt-5 mb-3 text-muted">© Web1 - BY Giovanni Sá Barreto</p>                
+            </form>
+        </div>
+        <script src="js/login.js"></script>
+    </body>
+</html>

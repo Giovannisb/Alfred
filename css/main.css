@@ -1,0 +1,17 @@
+h1{
+    margin: auto;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+#btnCriar{
+    margin-top: 2em;
+}
+
+ul{
+    list-style-type: none;
+}
+
+.btn-b{
+    min-width: 18em;
+}

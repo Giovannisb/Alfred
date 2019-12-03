@@ -1,0 +1,26 @@
+body{
+    background-image: url("../imagens/imagem2.png");
+    background-size: cover;
+}
+.form-singin{
+    width: 30em;
+    padding: 15px;
+    margin: auto;
+    margin-top: 100px;
+    text-align: center;
+    border-style: solid;
+    background-color: silver;
+    border-radius: 10px;
+    box-shadow: 15px 15px 25px rgba(0, 0, 0, 1);
+}
+
+.titulo{
+    font-size: 7em;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+input{
+    margin-bottom: 1em;
+}
+
+

@@ -1,0 +1,38 @@
+html, body { 
+    margin:0; 
+    height: 100%;
+    width: 100%;
+}
+h1{
+    margin: auto;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+}
+
+#mainDiv{
+    height: 100%;
+    width: 100%;
+    position:absolute;
+}
+
+#deletaBoard, #alteraCorBoard{
+    
+    margin: 5px;
+}
+
+#TituloBoard, .dropdown{
+    display: inline;
+}
+
+.card{
+    min-width: 18em;
+}
+
+#btnCreateNewList{
+    height: 3em;
+    display: block;
+}
+
+#createListForm{
+    display: none;
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/main.css">
+        <title>Alfred | Home</title>
+    </head>
+    <body onload="getBoards()">
+        <nav class="navbar navbar-light" style="background-color: #007413;">
+          <h1 class="Titulo">Alfred</h1>
+          <ul class="nav justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link active btn btn-success" id="btnHome" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active btn btn-danger" id="btnSair" href="#">Sair</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="container-fluid mh-100" id="mainDiv">
+          <ul id="btn-list">
+            <li>
+              <button class="btn btn-primary" id="btnCriar" data-toggle="modal" data-target="#divFormBoard"> Criar Board</button>
+            </li>
+          </ul>
+          <div class="row px-3 w-100 m-0" id="listaBoard">
+
+          </div>
+        </div>
+
+        <div class="modal fade" id="divFormBoard" tabindex="-1" role="dialog" aria-labelledby="tituloBoard" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content" id="boardRegister">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="tituloBoard">Criando board...</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="formBoard" method="post">
+                    <input id="nomeBoard" class="form-control" placeholder="Insira o nome do board" maxlength="30" required autofocus/>
+                    <input type="text" hidden id="colorButton"/>
+                    <div class="btn-group mr-2" role="group" aria-label="Primeiro grupo"></div>
+                        <td><input id="1" style="background-color: #01BAEF"  class="btn m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="2" style="background-color: #494ca2" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="3" style="background-color: #AB2346" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="4" style="background-color: #52de97" class="btn  m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="5" style="background-color: #ffd739" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="6" style="background-color: #a64942" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="1" style="background-color: #f45905" class="btn  m-1 btn-color" type="button" value=""> </td>
+                        <td><input id="2" style="background-color: #f54291" class="btn m-1 btn-color" type="button" value=""></td>
+                        <td><input id="3" style="background-color: #5f6769" class="btn m-1 btn-color" type="button" value=""></td>
+                        <button class="btn btn-primary" type="submit">Salvar board</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
