@@ -22,7 +22,7 @@ function board() {
     maindiv.style.backgroundColor = Board.color;
     nomeBoard.innerHTML = Board.name;
     getListas();
-    
+
     //getCards();
 }
 
@@ -157,7 +157,7 @@ function excluirBoard() {
 
 var listaEditada;
 
-function setEditId(){
+function setEditId() {
     listaEditada = event.target.getAttribute("idList");
     sessionStorage.setItem("idDaLista", listaEditada);
     //console.log(target);
@@ -217,7 +217,7 @@ function createLista(lista) {
     divButton.appendChild(button);
     divRow.appendChild(divButton);
 
-//data-toggle="modal" data-target="#modalExcluiBoard"
+    //data-toggle="modal" data-target="#modalExcluiBoard"
 
     var divBtnDelete = document.createElement("div");
     divBtnDelete.classList = "col-sm-3 text-right"
@@ -236,10 +236,11 @@ function createLista(lista) {
     // cria a div body
     var divBody = document.createElement("div");
     divBody.classList = "card-body divCardBody";
-    divBody.setAttribute("id", "bodyList");
+    divBody.setAttribute("id", "bodyList"+lista.id);
+    divBody.setAttribute("idLista", lista.id);
 
     var divBodyRow = document.createElement("div");
-    divBodyRow.classList = "row divCardBodyRow"
+    divBodyRow.classList = "row divCardBodyRow";
 
     var divNewCardBtn = document.createElement("div");
     divNewCardBtn.classList = "col-12 my-2";
@@ -273,12 +274,12 @@ function createLista(lista) {
 }
 
 //editar nome da lista
-function renomearList(){
+function renomearList() {
     var div1 = document.getElementById("listaCriada");
     //var listaId = div1.getAttribute("idList");
     var inputRenameList = document.getElementById("inputRenameList");
     var newNameList = {
-        "list_id":listaEditada,
+        "list_id": listaEditada,
         "name": inputRenameList.value,
         "token": token
     }
@@ -308,14 +309,14 @@ function renomearList(){
 
 //Permite Excluir uma lista
 
-function deletaLista(){
+function deletaLista() {
     let listaDeletar = sessionStorage.getItem("idDaLista");
     //console.log(listaDeletar);
     var dados = {
         list_id: listaDeletar,
         token: token
     }
-    
+
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -323,14 +324,14 @@ function deletaLista(){
             var obj = JSON.parse(this.responseText);
             console.log(obj);
             location.reload()
-            
+
         } else if ((this.responseText) == 4) {
             console.log(obj);
             alert("Não foi possivel deletar esta list");
             console.log(this.status);
         }
     }
-    
+
     var url = "https://tads-trello.herokuapp.com/api/trello/lists/delete";
     xhttp.open("DELETE", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -389,14 +390,13 @@ function getCards(lista_id, element) {
 }
 
 var formCreateCard = document.getElementById("formCreateCard");
-let listaCard = sessionStorage.getItem("idDaLista");
 formCreateCard.addEventListener("submit", function (e) {
     e.preventDefault();
     var card = {
         name: document.getElementById("inputNameCard").value,
         data: document.getElementById("inputDateCard").value,
         token: token,
-        list_id: listaCard
+        list_id: sessionStorage.getItem("idDaLista")
     }
 
     console.log(card);
@@ -423,21 +423,33 @@ formCreateCard.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(card));
 });
 
-function adicionarCard(card){
+function adicionarCard(card) {
     var divTitleCard = document.createElement("div");
     divTitleCard.classList = "col-sm-12";
     var h6 = document.createElement("h6");
     h6.innerText = card.name;
+    var btnCard = document.createElement("button");
+    btnCard.innerHTML = "Abrir";
+    btnCard.setAttribute("class", "btn btn-success")
+    btnCard.setAttribute("id", "idCard");
+    btnCard.setAttribute("data-toggle", "modal");
+    btnCard.setAttribute("data-target", "#modalEditCard");
+    btnCard.setAttribute("idCard", card.id);
+    btnCard.setAttribute("name", card.name);
+    btnCard.setAttribute("onclick", "setIdCard()");
+
 
     divTitleCard.appendChild(h6);
+    divTitleCard.appendChild(btnCard);
 
     var divCardRow = document.createElement("div");
     divCardRow.classList = "row";
-    
+
     divCardRow.appendChild(divTitleCard);
 
     var divCardBody = document.createElement("div");
     divCardBody.classList = "card-body";
+    divCardBody.setAttribute("id", "cardList");
 
     divCardBody.appendChild(divCardRow);
 
@@ -454,12 +466,82 @@ function adicionarCard(card){
     divListCardRow.setAttribute("id_list", sessionStorage.getItem("idDaLista"));
 
     divListCardRow.appendChild(divListCard);
-    
+
     /**
      * Une a div dos cards com a div body da lista
      */
-    divListCardBody = document.getElementById("bodyList");
+    divListCardBody = document.getElementById("bodyList"+card.trelloListId);
+   //console.log(card.trelloListId);
     divListCardBody.appendChild(divListCardRow);
 
 
 }
+
+function setIdCard(card) {
+    cardEditada = event.target.getAttribute("idcard");
+    sessionStorage.setItem("idDoCard", cardEditada);
+
+    cardName = event.target.getAttribute("name");
+    sessionStorage.setItem("nomeDoCard", cardName);
+
+    var nomeModal = document.getElementById("modalTitleEditCard");
+    nomeModal.innerHTML = sessionStorage.getItem("nomeDoCard");
+
+    //console.log(target);
+}
+
+function deletaCard() {
+    var dados = {
+        card_id: sessionStorage.getItem("idDoCard"),
+        token: token
+    }
+
+    var xhttp = new XMLHttpRequest;
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            alert("Card Deletado Com sucesso");
+            location.reload();
+        }
+
+        if (this.readyState == 4 && this.status == 400) {
+            alert("Não foi possivel deletar o card");
+        }
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/delete";
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(dados));
+}
+var btnAbrir = document.getElementById("idCard");
+
+document.getElementById("formEditTitleCard").addEventListener("submit", function(e){           
+    e.preventDefault();
+    var dadosName = {
+        token: token,
+        card_id: sessionStorage.getItem("idDoCard"),
+        name: document.getElementById("inputEditTitleCard").value
+    }
+    console.log(dadosName);
+
+    //Alterar Name do Card
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            alert("Card Atualizado");
+            location.reload();
+        }
+
+        if(this.readyState == 4 && this.status == 400){
+            console.log(this.responseText);
+            alert("Alterações não realizadas");
+        }
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/rename";
+    xhttp.open("PATCH", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(dadosName));
+});
+

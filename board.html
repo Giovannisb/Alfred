@@ -193,6 +193,25 @@
         </div>
         <!-- /modal excluir lista-->
 
+        <!-- Modal excluir card -->
+        <div class="modal fade" id="modalExcluiCard" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Deseja realmente exluir este card?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+                        <button type="button" class="btn btn-danger" onclick="deletaCard()">Excluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /modal excluir card-->
+
         <!-- Modal Create Card -->
         <div id="modalCreateCard" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -239,7 +258,7 @@
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h5 id="modalTitleEditCard" class="modal-title">Edit Card</h5>
+                        <h5 id="modalTitleEditCard" class="modal-title"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -258,8 +277,7 @@
                                         placeholder="Insira o título da lista..." required>
                                 </div>
                                 <div class="col-sm-4">
-                                    <input id="btnEditTitleCard " type="submit" class="btn btn-sm btn-outline-success"
-                                        value="Alterar">
+                                    <input id="btnEditTitleCard" type="submit" class="btn btn-sm btn-outline-success" value="Alterar">
                                 </div>
                             </div>
                         </form>
@@ -323,8 +341,7 @@
                         <div id="btnModalEditCard" class="form-row my-2">
                             <div class="form-group col-12 my-2 text-right">
                                 <!-- <input type="submit" class="btn btn-primary" value="Salvar Alterações"> -->
-                                <button type="button" id="btnDeleteCard" class="btn btn-danger"
-                                    data-dismiss="modal">Deletar</button>
+                                <button type="button" id="btnDeleteCard" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluiCard">Deletar</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>
