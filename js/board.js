@@ -436,6 +436,7 @@ function adicionarCard(card) {
     btnCard.setAttribute("data-target", "#modalEditCard");
     btnCard.setAttribute("idCard", card.id);
     btnCard.setAttribute("name", card.name);
+    btnCard.setAttribute("data", card.data);
     btnCard.setAttribute("onclick", "setIdCard()");
 
 
@@ -484,8 +485,14 @@ function setIdCard(card) {
     cardName = event.target.getAttribute("name");
     sessionStorage.setItem("nomeDoCard", cardName);
 
+    cardDate = event.target.getAttribute("data");
+    sessionStorage.setItem("data", cardDate);
+
     var nomeModal = document.getElementById("modalTitleEditCard");
     nomeModal.innerHTML = sessionStorage.getItem("nomeDoCard");
+
+    var DateCard = document.getElementById("modalDateCard");
+    DateCard.innerHTML = sessionStorage.getItem("data");
 
     //console.log(target);
 }
@@ -545,3 +552,123 @@ document.getElementById("formEditTitleCard").addEventListener("submit", function
     xhttp.send(JSON.stringify(dadosName));
 });
 
+document.getElementById("formEditDateCard").addEventListener("submit", function(e){
+    e.preventDefault();
+    var dadosData = {
+        token: token,
+        card_id: sessionStorage.getItem("idDoCard"),
+        data: document.getElementById("inputEditDataCard").value
+    }
+    console.log(dadosData);
+
+    //Alterar Data do Card
+    var xhttpData = new XMLHttpRequest();
+    xhttpData.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            alert("Card Atualizado");
+            location.reload();
+        }
+
+        if(this.readyState == 4 && this.status == 400){
+            console.log(this.responseText);
+            alert("Alterações não realizadas");
+        }
+    }
+
+    var urlEditData = "https://tads-trello.herokuapp.com/api/trello/cards/newdata";
+    xhttpData.open("PATCH", urlEditData, true);
+    xhttpData.setRequestHeader("Content-type", "application/json");
+    xhttpData.send(JSON.stringify(dadosData));
+});
+
+document.getElementById("formEditTextArea").addEventListener("submit", function(e){
+    e.preventDefault();
+    var dados = {
+        card_id: sessionStorage.getItem("idDoCard"),
+        comment: document.getElementById("inputTextAreaEditCard").value,
+        token: token
+    }
+
+    console.log(dados);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            alert("Comentário Inserido");
+            location.reload();
+        }
+
+        if(this.readyState == 4 && this.status == 400){
+            console.log(this.responseText);
+            alert("Alterações não realizadas");
+        }
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/addcomment";
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(dados));
+});
+
+document.getElementById("formEditTextArea").addEventListener("submit", function(e){
+    e.preventDefault();
+    var dados = {
+        card_id: sessionStorage.getItem("idDoCard"),
+        comment: document.getElementById("inputTextAreaEditCard").value,
+        token: token
+    }
+
+    console.log(dados);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            alert("Comentário Inserido");
+            location.reload();
+        }
+
+        if(this.readyState == 4 && this.status == 400){
+            console.log(this.responseText);
+            alert("Alterações não realizadas");
+        }
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/addcomment";
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(dados));
+});
+
+function getComments(idCard){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var listComments = JSON.parse(this.responseText);
+            console.log(listComments);
+
+            for(let i = 0; i<listComments.length;i++){
+                gerateListComments(listComments[i]["comment"]);
+            }
+
+        } 
+        
+        else if ((this.responseText) == 4) {
+            console.log(this.status);
+        }
+    }
+
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/" + token + "/" + sessionStorage.getItem("idDoCard") + "/comments";
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+}
+
+function gerateListComments(comment){
+    var li = document.createElement("li");
+    li.innerText = comment;
+    document.getElementById("listCommentCard").appendChild(li);
+}
