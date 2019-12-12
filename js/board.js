@@ -7,6 +7,7 @@ btnSair.addEventListener("click", function () {
     sessionStorage.removeItem("token");
     localStorage.removeItem("token");
     window.location = "login.html";
+    sessionStorage.clear();
 });
 
 //evento home
@@ -22,10 +23,10 @@ function board() {
     maindiv.style.backgroundColor = Board.color;
     nomeBoard.innerHTML = Board.name;
     getListas();
-
     //getCards();
 }
 
+//função para alterar cor dos boards
 var background = document.getElementById("mainDiv");
 function alteraCor(btn) {
 
@@ -60,6 +61,7 @@ function alteraCor(btn) {
 
 var btnCreateNewList = document.getElementById("btnCreateNewList");
 
+//formulário para criar listas
 btnCreateNewList.addEventListener("click", function (e) {
     e.preventDefault();
     btnCreateNewList.style.display = "none";
@@ -72,6 +74,7 @@ btnCancelCreateList.addEventListener("click", function (e) {
     formCreateList.style.display = "none";
 });
 
+//função para retornar as listas
 var Listas
 function getListas() {
     var url = "https://tads-trello.herokuapp.com/api/trello/lists/" + token + "/board/" + Board.id;
@@ -95,6 +98,7 @@ function getListas() {
     xhttp.send(JSON.stringify(url));
 }
 
+//função para criar listas
 var formCreateList = document.getElementById("createListForm");
 var token = JSON.parse(sessionStorage.getItem("token"));
 var listName = document.getElementById("inputNewListName");
@@ -132,6 +136,7 @@ formCreateList.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(lista));
 })
 
+//função para excluir board
 function excluirBoard() {
     var lista_delete = {
         "board_id": Board.id,
@@ -155,6 +160,7 @@ function excluirBoard() {
     xhttp.send(JSON.stringify(lista_delete));
 }
 
+//função para setar o id da lista no sessionStorage
 var listaEditada;
 
 function setEditId() {
@@ -163,6 +169,7 @@ function setEditId() {
     //console.log(target);
 }
 
+//função para criar o html das listas
 var listScreen = document.getElementById("mainDiv");
 var apendar = document.getElementById("listCardDiv");
 var boardGet = sessionStorage.getItem("BoardClicked");
@@ -259,16 +266,7 @@ function createLista(lista) {
     divBody.appendChild(divBodyRow);
     divCard.appendChild(divBody);
 
-    /** 
-     * Esta variável retorna a div que será usada para adicionar os cards
-     * da lista
-     **/
     var divListCardBody = document.getElementsByClassName("divCardBody");
-
-    /**
-     * O numero 0 passado junto a "divListCardBody" como parâmetro serve
-     * para "dizer" que essa váriável refere-se a a lista atual(Que esta sendo criada).
-     */
     getCards(lista.id, divListCardBody[0]);
 
 }
@@ -307,8 +305,7 @@ function renomearList() {
 
 }
 
-//Permite Excluir uma lista
-
+//função para excluir uma lista
 function deletaLista() {
     let listaDeletar = sessionStorage.getItem("idDaLista");
     //console.log(listaDeletar);
@@ -338,6 +335,7 @@ function deletaLista() {
     xhttp.send(JSON.stringify(dados));
 }
 
+//função para modificar o nome do board
 function changeNameBoard(Board) {
     var newName = document.getElementById("nomeNewBoard").value;
     var newName1 = {
@@ -368,7 +366,7 @@ function changeNameBoard(Board) {
 }
 
 
-
+//função para retornar os cards criados
 function getCards(lista_id, element) {
     var url = "https://tads-trello.herokuapp.com/api/trello/cards/" + token + "/list/" + lista_id;
     var xhttp = new XMLHttpRequest();
@@ -389,6 +387,7 @@ function getCards(lista_id, element) {
     xhttp.send(JSON.stringify(url));
 }
 
+//função para criar o card
 var formCreateCard = document.getElementById("formCreateCard");
 formCreateCard.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -423,6 +422,7 @@ formCreateCard.addEventListener("submit", function (e) {
     xhttp.send(JSON.stringify(card));
 });
 
+//função para criar o html do card
 function adicionarCard(card) {
     var divTitleCard = document.createElement("div");
     divTitleCard.classList = "col-sm-12";
@@ -438,7 +438,7 @@ function adicionarCard(card) {
     btnCard.setAttribute("name", card.name);
     btnCard.setAttribute("data", card.data);
     btnCard.setAttribute("onclick", "setIdCard()");
-
+    btnCard.setAttribute("onclick", "getComments()");
 
     divTitleCard.appendChild(h6);
     divTitleCard.appendChild(btnCard);
@@ -478,6 +478,7 @@ function adicionarCard(card) {
 
 }
 
+//função que seta no sessionStorage o id, nome e data dos cards
 function setIdCard(card) {
     cardEditada = event.target.getAttribute("idcard");
     sessionStorage.setItem("idDoCard", cardEditada);
@@ -497,6 +498,7 @@ function setIdCard(card) {
     //console.log(target);
 }
 
+//função para deletar o card
 function deletaCard() {
     var dados = {
         card_id: sessionStorage.getItem("idDoCard"),
@@ -520,8 +522,8 @@ function deletaCard() {
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(dados));
 }
-var btnAbrir = document.getElementById("idCard");
 
+var btnAbrir = document.getElementById("idCard");
 document.getElementById("formEditTitleCard").addEventListener("submit", function(e){           
     e.preventDefault();
     var dadosName = {
@@ -582,6 +584,7 @@ document.getElementById("formEditDateCard").addEventListener("submit", function(
     xhttpData.send(JSON.stringify(dadosData));
 });
 
+//função para inserir comentarios
 document.getElementById("formEditTextArea").addEventListener("submit", function(e){
     e.preventDefault();
     var dados = {
@@ -598,7 +601,8 @@ document.getElementById("formEditTextArea").addEventListener("submit", function(
         if(this.readyState == 4 && this.status == 200){
             console.log(this.responseText);
             alert("Comentário Inserido");
-            location.reload();
+            gerateListComments(dados.comment);
+            //location.reload();
         }
 
         if(this.readyState == 4 && this.status == 400){
@@ -613,43 +617,14 @@ document.getElementById("formEditTextArea").addEventListener("submit", function(
     xhttp.send(JSON.stringify(dados));
 });
 
-document.getElementById("formEditTextArea").addEventListener("submit", function(e){
-    e.preventDefault();
-    var dados = {
-        card_id: sessionStorage.getItem("idDoCard"),
-        comment: document.getElementById("inputTextAreaEditCard").value,
-        token: token
-    }
-
-    console.log(dados);
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-            console.log(this.responseText);
-            alert("Comentário Inserido");
-            location.reload();
-        }
-
-        if(this.readyState == 4 && this.status == 400){
-            console.log(this.responseText);
-            alert("Alterações não realizadas");
-        }
-    }
-
-    var url = "https://tads-trello.herokuapp.com/api/trello/cards/addcomment";
-    xhttp.open("POST", url, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(dados));
-});
-
-function getComments(idCard){
+//função que retorna os comentarios dos cards
+let identificacao = sessionStorage.getItem("idDoCard");
+function getComments(identificacao){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var listComments = JSON.parse(this.responseText);
             console.log(listComments);
-
             for(let i = 0; i<listComments.length;i++){
                 gerateListComments(listComments[i]["comment"]);
             }
@@ -661,13 +636,15 @@ function getComments(idCard){
         }
     }
 
-    var url = "https://tads-trello.herokuapp.com/api/trello/cards/" + token + "/" + sessionStorage.getItem("idDoCard") + "/comments";
+    var url = "https://tads-trello.herokuapp.com/api/trello/cards/" + token + "/" + identificacao + "/comments";
     xhttp.open("GET", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
 
+//gera o html dos comentarios
 function gerateListComments(comment){
+    
     var li = document.createElement("li");
     li.innerText = comment;
     document.getElementById("listCommentCard").appendChild(li);
