@@ -438,7 +438,6 @@ function adicionarCard(card) {
     btnCard.setAttribute("name", card.name);
     btnCard.setAttribute("data", card.data);
     btnCard.setAttribute("onclick", "setIdCard()");
-    btnCard.setAttribute("onclick", "getComments()");
 
     divTitleCard.appendChild(h6);
     divTitleCard.appendChild(btnCard);
@@ -494,6 +493,9 @@ function setIdCard(card) {
 
     var DateCard = document.getElementById("modalDateCard");
     DateCard.innerHTML = sessionStorage.getItem("data");
+
+    let identificacao = sessionStorage.getItem("idDoCard");
+    getComments(identificacao);
 
     //console.log(target);
 }
@@ -618,7 +620,6 @@ document.getElementById("formEditTextArea").addEventListener("submit", function(
 });
 
 //função que retorna os comentarios dos cards
-let identificacao = sessionStorage.getItem("idDoCard");
 function getComments(identificacao){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
